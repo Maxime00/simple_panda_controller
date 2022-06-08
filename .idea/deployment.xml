@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ros2@localhost:4865" preserveFilePermissions="true" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="ros2@localhost:4865">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/ros2_ws/src/simple_controllers" local="$PROJECT_DIR$/simple_controllers" web="/ros2_ws/src/simple_controllers" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
