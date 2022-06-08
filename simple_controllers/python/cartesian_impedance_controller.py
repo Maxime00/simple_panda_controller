@@ -8,13 +8,14 @@ from robot_interface import RobotInterface
 
 # should find way to have less imports
 from controllers import create_cartesian_controller, CONTROLLER_TYPE
-from dynamical_systems import create_cartesian_ds, DYNAMICAL_SYSTEM
+from dynamical_systems import create_cartesian_ds, DYNAMICAL_SYSTEM_TYPE
 from pyquaternion import Quaternion
 from network_interfaces.control_type import ControlType
 from network_interfaces.zmq.network import CommandMessage
 
 
 def control_loop_step(robot, command, ds, ctrl):
+
     # read the robot state
     state = robot.get_state()
 
@@ -45,26 +46,29 @@ def control_loop(robot, timestep):
     target.set_orientation(Quaternion(axis=[.0, 1., .0], radians=math.pi))
 
     # Set DS to follow with attractor at target
-    ds = create_cartesian_ds(DYNAMICAL_SYSTEM.POINT_ATTRACTOR)
+    ds = create_cartesian_ds(DYNAMICAL_SYSTEM_TYPE.POINT_ATTRACTOR)
     ds.set_parameter(sr.Parameter("attractor", target, sr.ParameterType.STATE, sr.StateType.CARTESIAN_POSE))
 
     # Create command message
     command = CommandMessage()
     command.control_type = [4]  # Effort ? what is this ?
 
-    # Parameters
-    nb_joints = 7
+    # Set initial state, for testing
+    #init_state = robot.state.ee_state.Random("test")
+    #distance = sr.dist(init_state, target, sr.CartesianStateVariable.POSE)
+
+    # Stopping parameter
     tolerance = 1e-2
 
-    ctrl = create_cartesian_controller(CONTROLLER_TYPE.IMPEDANCE, nb_joints)
+    ctrl = create_cartesian_controller(CONTROLLER_TYPE.IMPEDANCE)
 
     # loop until target is reached
-    distance = sr.dist(robot.state.ee_state, target, sr.CartesianStateVariable.POSE)
+    distance = sr.dist(robot.get_state().ee_state, target, sr.CartesianStateVariable.POSE)
 
     while distance > tolerance:
 
         control_loop_step(robot, command, ds, ctrl)
-        distance = sr.dist(robot.eef_pose, target, sr.CartesianStateVariable.POSE)
+        distance = sr.dist(robot.state.ee_state, target, sr.CartesianStateVariable.POSE)
 
         print(f"Distance to attractor: {distance}")
         print("-----------")
