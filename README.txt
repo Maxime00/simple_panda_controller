@@ -6,5 +6,6 @@ Contains :
 simple controller
 robot interface
 
+figure out minimal control rate
 
 -no-cpp in network interface install -> error in finding clproto otherwise (need to install it? wrong version or cl?)
