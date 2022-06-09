@@ -16,8 +16,7 @@ class RobotInterface(object):
         self.state = network.StateMessage()
 
     def get_state(self):
-        self.state = network.receive_state(self.__subscriber)
-        return self.state
+        return network.receive_state(self.__subscriber)
 
     def send_command(self, command: network.CommandMessage()):
         network.send_command(command, self.__publisher)

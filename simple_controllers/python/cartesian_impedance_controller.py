@@ -63,12 +63,14 @@ def control_loop(robot, timestep):
     ctrl = create_cartesian_controller(CONTROLLER_TYPE.IMPEDANCE)
 
     # loop until target is reached
+    state = robot.get_state()
+    print(state)
     distance = sr.dist(robot.get_state().ee_state, target, sr.CartesianStateVariable.POSE)
 
     while distance > tolerance:
 
         control_loop_step(robot, command, ds, ctrl)
-        distance = sr.dist(robot.state.ee_state, target, sr.CartesianStateVariable.POSE)
+        distance = sr.dist(robot.get_state().ee_state, target, sr.CartesianStateVariable.POSE)
 
         print(f"Distance to attractor: {distance}")
         print("-----------")
@@ -77,8 +79,8 @@ def control_loop(robot, timestep):
     print("##### TARGET #####")
     print(target)
     print("##### CURRENT STATES #####")
-    print(robot.state.joint_state)
-    print(robot.state.ee_state)
+    # print(robot.state.joint_state)
+    # print(robot.state.ee_state)
 
 
 def main():
